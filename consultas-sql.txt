@@ -1,0 +1,52 @@
+SELECT clients.id, clients.first_name,  clients.last_name, 
+clients.email,account_no , balance 
+from clients left join 
+accounts on clients.id = accounts.client_id
+
+SELECT transactions.id , transactions.amount, transaction_type 
+from transactions left join 
+transactions_types on transactions.id = 
+
+
+
+
+
+
+//---RELACION ENTRE TABLAS
+
+table users{
+  id_users uuid [pk]
+  name varchar [not null]
+  email varchar [not null, unique]
+  password varchar [not null]
+  age varchar [not null]
+  is_active bool [default: true]
+}
+
+table courses{
+  id_courses uuid [pk]
+  title varchar [not null]
+  description varchar [not null]
+  level varchar [not null]
+  teacher varchar [not null]
+  user_id uuid [not null]
+}
+
+table course_video{
+  id_course_video uuid [pk]
+  title varchar [not null]
+  url varchar [not null]
+}
+
+table categories{
+  id_categories uuid [pk]
+  name varchar [not null]
+}
+
+table roles{
+  id_roles uuid [pk]
+  name varchar [not null]
+}
+
+
+Ref: "users"."id_users" < "courses"."user_id"
