@@ -104,11 +104,49 @@ const deleteMovie = (req, res) => {
     });
 };
 
+//Servicio put editar: require todas las columnas
+const putMovie = (req, res) => {
+  const id = req.params.id;
+  //Columnas necesarias para poder modificar
+  const { name, genre, duration, releaseDate } = req.body;
+
+  //If validar datos: Si existe name o si es un valor truthy: signigica q son funcionales
+  if (name && genre && duration && releaseDate) {
+    //Ejecutar controlador que genera un promesa y muestra un arreglo de las entidades que se modificaron.
+    moviesControllers
+      .editMovie(id, { name, genre, duration, releaseDate })
+      .then((response) => {
+        //If valida si una pelicula existe
+        if (response[0]) {
+          res
+            .status(200)
+            .json({ message: `Movie with edit ID: ${id}, edite succesfully` });
+        } else {
+          res.status(404).json({ message: "Invalid ID" });
+        }
+      })
+      .catch((err) => {
+        res.status(400).json({ message: err.message });
+      });
+  } else {
+    res.status(400).json({
+      message: "Missing data",
+      fields: {
+        name: "string",
+        genre: "string",
+        duration: "integer",
+        releaseDate: "YYYY/MM/DD",
+      },
+    });
+  }
+};
+
 //exportar servicios
 module.exports = {
   getAllMovies, //obtener todo
   getMovieById, //obtener id
   postMovie, //crear
   patchMovie, //actualizar
+  putMovie,
   deleteMovie,
 };

@@ -86,6 +86,11 @@ const deleteProduct = (req, res) => {
       res.status(400).json(err);
     });
 };
+
+const putMovie = (req, res) => {
+  const id = req.params.id;
+  const {} = req.body;
+};
 module.exports = {
   getAllProducts,
   getProductById,
