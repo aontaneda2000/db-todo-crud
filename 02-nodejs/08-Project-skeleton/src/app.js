@@ -12,6 +12,8 @@ const { port } = require("./config");
 //routes
 const usersRouter = require("./users/users.router");
 const authRouter = require("./auth/auth.router");
+//importacion modelos
+const initModels = require("./models/initModels");
 
 //convierte json a js
 app.use(express.json());
@@ -33,6 +35,9 @@ db.sync()
   .catch((err) => {
     console.log(err);
   });
+
+//ejecutar modelos
+initModels();
 
 //middlewars: recibe tambien next: Pasa a la siguiente funcion
 app.get("/", (req, res) => {

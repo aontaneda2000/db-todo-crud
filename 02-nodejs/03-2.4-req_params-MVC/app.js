@@ -37,7 +37,7 @@ app.get("/todos/:id", (req, res) => {
   //data[0] genera un arreglo y no es recomendable debido a que el front tiene que colocar data en la poosicion 1..
   //como gestionar un error de un id que no existe en la bdd y para ello se neceista logica de JS >
   if (data.length !== 0) {
-    res.status(200).json({ my_id: id, data: data[0] });
+    res.status(200).json({ my_id: id, data: data });
     //pasar por thunder client: %20 genera un espacio en EL RESPONSE
   } else {
     res.status(404).json({ message: "ID INVALID" });

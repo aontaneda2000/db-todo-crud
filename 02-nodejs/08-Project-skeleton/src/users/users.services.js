@@ -141,18 +141,40 @@ const getMyUser = (req, res) => {
 
 const patchMyUser = (req, res) => {
   const id = req.user.id;
-  const data = req.body;
+  //unicos datos que se puede modificar del usuario
+  const { firstName, lastName, phone, birthday, gender, country } = req.body;
   usersControllers
-    .updateUser(id, data)
+    .updateUser(id, { firstName, lastName, phone, birthday, gender, country })
     .then((data) => {
-      res.status(200).json({ message: `Edited succesfully ${id}`, data: data });
+      res.status(200).json({ message: `Edited succesfully ${id}` });
     })
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
 };
 
+//2 tipos de delete:
+/* 
+1. Administrador:  Cuenta de un usuario hace años
+2. por mi mismo: Eliminarme a mismo no nos interesa que la cuenta ya no este activo pero que no este eliminado por completo
+
+*/
+
 const deleteMyUser = (req, res) => {
+  const id = req.user.id;
+
+  //No se elimina, si no se inactiva
+  usersControllers
+    .updateUser(id, { status: "inactive" })
+    .then(() => {
+      res.status(200).json({ message: `Your user was deleted succesfully` });
+    })
+    .catch((err) => {
+      res.status(400).json({ message: err.message });
+    });
+};
+
+/* const deleteMyUser = (req, res) => {
   const id = req.user.id;
 
   usersControllers
@@ -163,7 +185,7 @@ const deleteMyUser = (req, res) => {
     .catch((err) => {
       res.status(400).json({ message: err.message });
     });
-};
+}; */
 
 module.exports = {
   getAllUsers,

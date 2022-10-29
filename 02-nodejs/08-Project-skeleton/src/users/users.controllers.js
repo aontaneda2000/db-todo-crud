@@ -7,9 +7,13 @@ const uuid = require("uuid"); //crear nuevo usuario
 const Users = require("../models/users.models");
 const { hashPassword } = require("../utils/crypto");
 
-//Controlador Obtener todos los usuarios, y no require parametros para mostrar todos los usuarios
+//Controlador Obtener todos los usuarios, y no require parametros para mostrar todos los usuarios -> primordial tener 2 controladores para obtener usuarios sin la condicion
 const getAllUsers = async () => {
-  const data = await Users.findAll();
+  const data = await Users.findAll({
+    where: {
+      status: "active",
+    },
+  });
   return data;
 };
 
@@ -18,6 +22,7 @@ const getUserById = async (id) => {
   const data = await Users.findOne({
     where: {
       id: id,
+      status: "active",
     },
   });
   return data;
@@ -71,6 +76,7 @@ const getUserByEmail = async (email) => {
     //condicional
     where: {
       email: email,
+      status: "active",
     },
   });
   return data;

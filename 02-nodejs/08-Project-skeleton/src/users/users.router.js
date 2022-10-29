@@ -2,6 +2,8 @@ const router = require("express").Router();
 
 //importacion pasport
 const passport = require("passport");
+//importacion middleware personalizado se pasa en la ruta en el medio porque tiene que estar autenticado primero
+const adminValidate = require("../middlewares/role.middleware");
 
 const userServices = require("./users.services");
 
@@ -41,13 +43,21 @@ router
     passport.authenticate("jwt", { session: false }),
     userServices.deleteMyUser
   );
-/*.delete(); */
 
 //2. v2: ruta en especifico para que sea dinamica para distintas peticiones: /api/v1/users/:id
 router
   .route("/:id")
   .get(userServices.getUserById)
-  .patch(userServices.patchUser) //rol administrador
-  .delete(userServices.deleteUser); //rol administrador
+  .patch(
+    //proteger rutas para que solo admin pueda eliminar
+    passport.authenticate("jwt", { session: false }),
+    adminValidate,
+    userServices.patchUser
+  ) //rol administrador
+  .delete(
+    passport.authenticate("jwt", { session: false }),
+    adminValidate,
+    userServices.deleteUser
+  ); //rol administrador
 
 module.exports = router;
