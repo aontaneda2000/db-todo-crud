@@ -16,7 +16,38 @@ const createMovie = async (data) => {
   });
   return newMovie;
 };
+
+const getMovieById = async (id) => {
+  const data = Movies.findOne({
+    where: {
+      id: id,
+    },
+  });
+  return data;
+};
+
+const deleteMovie = async (id) => {
+  const data = Movies.destroy({
+    where: {
+      id: id,
+    },
+  });
+  return data;
+};
+
+const editMovie = async (id, data) => {
+  const dataMovie = Movies.update(data, {
+    where: {
+      id: id,
+    },
+  });
+  return dataMovie;
+};
+
 module.exports = {
   getAllMovies,
   createMovie,
+  getMovieById,
+  deleteMovie,
+  editMovie,
 };

@@ -8,6 +8,9 @@ const initModels = require("./models/initModels");
 //importacion rutas
 const movieRouter = require("./movies/movies.router");
 
+//req body viene en formato json y esto nos permite acceder a el como si fuera un objeto de js normal
+app.use(express.json());
+
 const { port } = require("./config");
 
 db.authenticate()
@@ -25,7 +28,7 @@ db.sync()
 //Ejecutar init Models -> Campos de mi bdd
 initModels();
 
-app.use("/movies", movieRouter);
+app.use("/moviescontroller", movieRouter);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "SERVER IS OK" });
